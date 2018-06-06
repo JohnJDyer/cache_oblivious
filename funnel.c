@@ -13,24 +13,19 @@
 #define FUNNEL_BASE 5 // d     used in functions is equivalent to the FUNNEL_BASE: ONE OF 3,4,5
 #define ALPHA       2 // alpha is another tuning parameter controlling the number of elements outputted by a Funnel
 
-
 int buffer_size(int K){
   if(K==2)
     return 8;
-
   int sqrt_K = ceil(sqrt(K));
   int ret    = buffer_size(sqrt_K);
-
   return ret * ret;
 }
-
 
 int funnel_size(int K){
   if(K ==2)
     return 0;
   int sqrt_K = ceil(sqrt(K));
   return sqrt_K * buffer_size(sqrt_K) + (1 + sqrt_K) * funnel_size(sqrt_K);
-
 }
 
 int get_k(int N){
@@ -40,7 +35,6 @@ int get_k(int N){
   }
   return K;
 }
-
 
 // Recursive Funnel Initializer
 struct binary_merger* funnel_init_rec (
@@ -77,13 +71,11 @@ struct binary_merger* funnel_init_rec (
     middle_buffs[i] = malloc(sizeof(struct buffer ));
     buffer_init_mem(middle_buffs[i], allocator, buffer_size(sqrt_K));
     allocator += buffer_size(sqrt_K);
-
   }
 
   // Create bottom mergers.
   struct binary_merger **bottom_mergers = malloc(sizeof(struct binary_merger *) * sqrt_K); //for the recursive calls
   for(int i = 0; i < sqrt_K; i++){
-
     bottom_mergers[i] = funnel_init_rec(
       sqrt_K,
       middle_buffs      [i],
@@ -92,7 +84,6 @@ struct binary_merger* funnel_init_rec (
       allocator);
 
       allocator += next_funnel_size;
-
   }
 
   // Create and return top merger
@@ -182,7 +173,6 @@ void ofunnelsort(
   // Create the top funnel and merge
   struct binary_merger* bm = funnel_init(K, &out_buffer, in_buffers, fspace);
   fill(bm);
-
   binary_merger_destroy(bm);
 
   free(in_buffers);
@@ -197,9 +187,7 @@ void funnelSort(
 
   keytype* O      = malloc(sizeof(keytype) * N);
   keytype* fspace = malloc(sizeof(keytype) * funnel_size(get_k(N)));
-
   ofunnelsort(N, A, O, fspace);
-
   memcpy(A, O, sizeof(keytype) * N);
 
   free(O);

@@ -19,13 +19,11 @@ void binary_merger_init(
   struct buffer*        op)
 {
   assert(bin);
-
   bin->left       = bin_left;
   bin->right      = bin_right;
   bin->left_inp   = linp;
   bin->right_inp  = rinp;
   bin->output     = op;
-
   return;
 }
 
@@ -39,7 +37,6 @@ void binary_merger_destroy(struct binary_merger* bin)
     buffer_destroy       (bin->right_inp); bin->right_inp  = NULL;
     free(bin);                             bin = NULL;
   }
-
   return;
 }
 
@@ -48,19 +45,16 @@ void printbm(struct binary_merger* bin, int n){
 
   for(int i = 0; i < n; i ++){
     printf("\t");
-  }
-  printf("%p ", (void *) bin);
+  } printf("%p ", (void *) bin);
 
   if(bin){
     printf("\n");
     printbm(bin->right, n+1);
     printf("\n");
     printbm(bin->left, n+1);
-
   } else {
     printf("bm_null\n");
   }
-
 }
 
 // Fills output buffer of a given Funnel
@@ -78,7 +72,6 @@ void fill(struct binary_merger* bin){
       bool left_good  = (bin->left_inp ->count) > 0;
 
       if(right_good && left_good){
-
         int c = compare(
           bin->left_inp ->first,
           bin->right_inp->first);
