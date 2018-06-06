@@ -1,14 +1,11 @@
 #include "buffer.h"
 
 // Basic binary merger structure
-struct binary_merger
-{
+struct binary_merger{
     struct binary_merger*   left;
     struct binary_merger*   right;
-
     struct buffer*          left_inp;
     struct buffer*          right_inp;
-
     struct buffer*          output;
 };
 
@@ -35,7 +32,6 @@ void binary_merger_init(
 // Clean up code for a binary merger
 void binary_merger_destroy(struct binary_merger* bin)
 {
-
   if(bin){
     binary_merger_destroy(bin->left);      bin->left       = NULL; // RECURSIVE
     binary_merger_destroy(bin->right);     bin->right      = NULL; // RECURSIVE
@@ -56,11 +52,6 @@ void printbm(struct binary_merger* bin, int n){
   printf("%p ", (void *) bin);
 
   if(bin){
-
-    //printf("max: %u ", bin-> output    ->max_size); buffer_print(bin -> output);    printf(".");
-    //printf("max: %u ", bin-> left_inp  ->max_size); buffer_print(bin -> left_inp);  printf(".");
-    //printf("max: %u ", bin-> right_inp ->max_size); buffer_print(bin -> right_inp);
-
     printf("\n");
     printbm(bin->right, n+1);
     printf("\n");
@@ -73,11 +64,8 @@ void printbm(struct binary_merger* bin, int n){
 }
 
 // Fills output buffer of a given Funnel
-void fill(struct binary_merger* bin)
-{
-
+void fill(struct binary_merger* bin){
   if(bin){
-
     while( (bin -> output -> count) < (bin -> output -> max_size) ){
 
       if(bin->left_inp ->count ==0)

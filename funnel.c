@@ -19,34 +19,26 @@ int buffer_size(int K){
     return 8;
 
   int sqrt_K = ceil(sqrt(K));
-
-  int ret = buffer_size(sqrt_K);
+  int ret    = buffer_size(sqrt_K);
 
   return ret * ret;
-
 }
 
 
 int funnel_size(int K){
-
   if(K ==2)
     return 0;
-
   int sqrt_K = ceil(sqrt(K));
-
   return sqrt_K * buffer_size(sqrt_K) + (1 + sqrt_K) * funnel_size(sqrt_K);
 
 }
-
 
 int get_k(int N){
   int K = 4;
   while(K * K * K < N){
     K = K * K;
   }
-
   return K;
-
 }
 
 
@@ -74,14 +66,13 @@ struct binary_merger* funnel_init_rec (
   int sqrt_K = ceil(sqrt(K));
 
   //recursively create funnel
-
-  // TODO Calculate buffer offsets
   keytype* allocator = mem;
   int next_funnel_size = funnel_size(sqrt_K);
   allocator += next_funnel_size;
 
   // Create middle buffers.
-  struct buffer **middle_buffs = malloc(sizeof(struct buffer *) * sqrt_K); //for the recursive calls
+  struct buffer **middle_buffs = malloc(sizeof(struct buffer *) * sqrt_K);
+
   for(int i = 0; i < sqrt_K; i++){
     middle_buffs[i] = malloc(sizeof(struct buffer ));
     buffer_init_mem(middle_buffs[i], allocator, buffer_size(sqrt_K));
@@ -135,8 +126,7 @@ void ofunnelsort(
   keytype*  fspace)
 {
 
-  int K = get_k(N);
-
+  int K  = get_k(N);
   int M  = N / K;            // ~ N ^ (2/3) == K ^ 2
   int LB = N - (M * (K-1));  // ~ N ^ (2/3) == K ^ 2
 
@@ -171,8 +161,6 @@ void ofunnelsort(
 
     free(_O_swap); _O_swap = NULL;
   }
-
-  //buffer_id =========================================================
 
   // Create input buffers
   struct buffer** in_buffers = malloc(sizeof(struct buffer*) * K); // we should have K + 1 buffers

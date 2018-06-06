@@ -1,23 +1,20 @@
 #include "sort_utils.h"
 
-/* =================================================== */
 /*
  * Circular Buffer functions
  */
 
-struct buffer
-{
-    keytype* start;
-    keytype* first;
-    keytype* last;
+struct buffer{
+  keytype* start;
+  keytype* first;
+  keytype* last;
 
-    long max_size;
-    long count;
+  long max_size;
+  long count;
 };
 
 // Create an empty buffer at start location of an array
-void buffer_init_mem(struct buffer* buf, keytype* mem, long total_size)
-{
+void buffer_init_mem(struct buffer* buf, keytype* mem, long total_size){
   assert(buf);
 
   buf->first      = mem;
@@ -31,8 +28,7 @@ void buffer_init_mem(struct buffer* buf, keytype* mem, long total_size)
 
 // Init Buffer
 // Given pointers to start, end of an array and a buffer pointer
-void buffer_init(struct buffer* buf, keytype* start, keytype* end)
-{
+void buffer_init(struct buffer* buf, keytype* start, keytype* end){
   assert(buf);
 
   // Here the last position is one ahead of the last data
@@ -46,8 +42,7 @@ void buffer_init(struct buffer* buf, keytype* start, keytype* end)
 }
 
 // Destroy a buffer struct
-void buffer_destroy(struct buffer* buf)
-{
+void buffer_destroy(struct buffer* buf){
   if(buf) {
     buf->first = NULL;
     buf->start = NULL;
@@ -59,8 +54,7 @@ void buffer_destroy(struct buffer* buf)
 }
 
 // Increment the end element pointer in a circular queue
-void increment(struct buffer* buf, keytype** p)
-{
+void increment(struct buffer* buf, keytype** p){
   if((*p) == buf->start + buf->max_size - 1) {
     (*p) = buf->start;
   } else {
@@ -71,8 +65,7 @@ void increment(struct buffer* buf, keytype** p)
 }
 
 // Insert element to the back of a buffer
-void buffer_insert(struct buffer* buf, keytype elem)
-{
+void buffer_insert(struct buffer* buf, keytype elem){
   assert(buf);
 
   //Check if buffer is not full
@@ -86,8 +79,7 @@ void buffer_insert(struct buffer* buf, keytype elem)
 }
 
 // Extract top element of a buffer
-keytype buffer_extract(struct buffer* buf)
-{
+keytype buffer_extract(struct buffer* buf){
   assert(buf);
   assert(buf->count != 0);
 
@@ -106,33 +98,26 @@ keytype buffer_extract(struct buffer* buf)
 }
 
 // Look at top element of a funnel
-keytype buffer_peep(struct buffer* buf)
-{
+keytype buffer_peep(struct buffer* buf){
   assert(buf);
   assert(buf->count != 0);
   return *(buf->first);
 }
 
 // Prints contents of a buffer
-void buffer_print(struct buffer* buf)
-{
+void buffer_print(struct buffer* buf){
   assert(buf);
-
   printf("count: %lu ",buf->count);
 
   keytype* iter;
-  if(buf->count != 0)
-  {
+  if(buf->count != 0){
     int i = 0;
     iter = buf->first;
-
-    while(i < buf->count)
-    {
+    while(i < buf->count){
       printf("%lu ",*(iter));
       increment(buf,&iter);
       i++;
     }
-
   }
 
   return;
